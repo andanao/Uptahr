@@ -51,7 +51,7 @@ class Airtable():
         airtable_records = []
         run = True
         while run is True:
-            response = requests.get(air.url, params=params, headers=air.headers)
+            response = requests.get(self.url, params=params, headers=air.headers)
             airtable_response = response.json()
             airtable_records += (airtable_response["records"])
             if "offset" in airtable_response:

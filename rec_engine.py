@@ -4,14 +4,17 @@ from user import User
 
 # %%
 class Engine():
-    def __init__(self) -> None:
-        self.get_users
+    def __init__(self):
+        self.get_users()
+        self.air = Airtable()
     
     def get_users(self,num=10):
-        self.users = []
+        users = []
         for i in range(num):
-            self.users.append(User())
+            users.append(User())
+        self.users=users
 
+    
 
 
 if __name__ == "__main__":
