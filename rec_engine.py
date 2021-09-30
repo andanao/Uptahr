@@ -1,8 +1,10 @@
 #%%
 from collections import OrderedDict
+import numpy as np
+
 from airtable import Airtable
 from user import User
-# import requests
+
 
 # %%
 class Engine():
@@ -40,12 +42,17 @@ class Engine():
         for user in self.users:
             user.tags_read = clean_tags
 
+    def get_article_reads(self):
+        """get the number of times each article has been read and attatch it to the df"""
+        print("!! get_article_reads generateing random read numbers")
+        self.air.table_df['read_count'] = np.random.randint(0,1000,size=len(self.air.table_df))
+
 
 if __name__ == "__main__":
     eng = Engine()
     eng.get_table_tags()
     eng.set_user_tags_blank()
-    
+    eng.get_article_reads()
 
 
 
