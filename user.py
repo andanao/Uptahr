@@ -1,9 +1,8 @@
 #%%
-import numpy as np
-from collections import OrderedDict
-
 class User:
     def __init__(self) -> None:
+        import numpy as np
+        from collections import OrderedDict
         self.id = np.random.randint(10000)
         self.articles_read = []
         # self.likes = np.zeros(10) # 
