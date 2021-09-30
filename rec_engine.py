@@ -1,5 +1,6 @@
 #%%
 from collections import OrderedDict
+import pandas as pd
 import numpy as np
 
 from airtable import Airtable
@@ -12,6 +13,10 @@ class Engine():
         self.get_users()
         self.air = Airtable()
         self.air.get_dataframe()
+        self.get_article_reads()
+        self.get_table_tags()
+
+        self.set_user_tags_blank()
     
     def get_users(self,num=10):
         users = []
@@ -49,12 +54,14 @@ class Engine():
 
     def make_tag_array(self):
         """make tag array, used for calculating reccomendations based on article tags"""
+        pass
+
 
 if __name__ == "__main__":
     eng = Engine()
-    eng.get_table_tags()
-    eng.set_user_tags_blank()
-    eng.get_article_reads()
+    # eng.get_table_tags()
+    # eng.set_user_tags_blank()
+    # eng.get_article_reads()
 
 
 
@@ -62,4 +69,8 @@ if __name__ == "__main__":
     df = air.table_df
     user0 = eng.users[0]
     # eng.air.get_dataframe()
+# %%
+tag_df = pd.DataFrame(np.zeros([len(eng.air.table_df),len(eng.table_tags)]),
+                        index = eng.air.table_df.index,
+                        columns=eng.table_tags.keys())
 # %%
