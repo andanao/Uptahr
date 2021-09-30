@@ -1,6 +1,5 @@
 #%%
 import requests
-import json
 import pandas as pd
 
 class Airtable():
@@ -41,9 +40,21 @@ class Airtable():
         self.url = "https://api.airtable.com/v0/" + self.base_id + "/" + self.table_name
         
 
-
-    def get_table(self,params= (),table_name = False):
-        pass
+    def get_table_all(self):
+        params = ()
+        airtable_records = []
+        run = True
+        while run is True:
+            response = requests.get(air.url, params=params, headers=air.headers)
+            airtable_response = response.json()
+            airtable_records += (airtable_response["records"])
+            if "offset" in airtable_response:
+                run = True
+                params = (("offset", airtable_response["offset"]),)
+            else:
+                run = False
+        self.table_records = airtable_records
+        return self.table_records
 
     def get_dataframe(self):
         pass
@@ -55,7 +66,6 @@ class Airtable():
 
 
 if __name__=="__main__":
+    import json
     air = Airtable()
-    
-
-# %%
+    temp = air.get_table_all()
