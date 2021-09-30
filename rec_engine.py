@@ -47,6 +47,8 @@ class Engine():
         print("!! get_article_reads generateing random read numbers")
         self.air.table_df['read_count'] = np.random.randint(0,1000,size=len(self.air.table_df))
 
+    def make_tag_array(self):
+        """make tag array, used for calculating reccomendations based on article tags"""
 
 if __name__ == "__main__":
     eng = Engine()
