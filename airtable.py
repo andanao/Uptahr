@@ -4,6 +4,7 @@ import pandas as pd
 
 class Airtable():
     def __init__(self):
+        """very basic Airtable interface just pulls tables for the most part"""
         self.set_api_key()
         self.set_base_id()
         self.set_table_name()
@@ -11,6 +12,7 @@ class Airtable():
         self.headers = {"Authorization": "Bearer " + self.api_key}
     
     def set_api_key (self, api_key = False):
+        """set api key to be used during airtable calls default reads key from keys/api_key.txt"""
         if not api_key:
             with open('keys/api_key.txt') as f:
                 self.api_key = f.read()
@@ -18,6 +20,7 @@ class Airtable():
             self.api_key = api_key
 
     def set_base_id(self,base_id = False):
+        """set base id to be used during airtable calls default reads key from keys/base_id.txt"""
         if not base_id:
             with open('keys/base_id.txt') as f:
                 self.base_id = f.read()
@@ -25,6 +28,7 @@ class Airtable():
             self.base_id = base_id
 
     def set_table_name(self,table_name = False):
+        """set table to be used during airtable calls default reads key from keys/table_name.txt"""
         if not table_name:
             with open('keys/table_name.txt') as f:
                 self.table_name = f.read()
@@ -32,6 +36,7 @@ class Airtable():
             self.table_name = table_name
 
     def set_url(self):
+        """set the url to be used for api calls !!not fully implemented!!"""
         if not(self.base_id):
             self.set_base_id()
         if not(self.table_name):
@@ -41,6 +46,7 @@ class Airtable():
         
 
     def get_table_all(self):
+        """get and return full airtable table"""
         params = ()
         airtable_records = []
         run = True
@@ -57,6 +63,7 @@ class Airtable():
         return self.table_records
 
     def get_dataframe(self):
+        """get and return airtable table as a pandas dataframe"""
         self.get_table_all()
         airtable_rows = [] 
         airtable_index = []
