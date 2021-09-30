@@ -1,9 +1,8 @@
 #%%
-import requests
-import pandas as pd
-
 class Airtable():
     def __init__(self):
+        import requests
+        import pandas as pd
         """very basic Airtable interface just pulls tables for the most part"""
         self.set_api_key()
         self.set_base_id()
