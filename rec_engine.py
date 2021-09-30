@@ -20,4 +20,5 @@ class Engine():
 if __name__ == "__main__":
     eng = Engine()
     user0 = eng.users[0]
+    eng.air.get_dataframe(return=True)
 # %%
