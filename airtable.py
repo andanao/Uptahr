@@ -57,15 +57,19 @@ class Airtable():
         return self.table_records
 
     def get_dataframe(self):
-        pass
-    
-    
-
-
-
+        airtable_rows = [] 
+        airtable_index = []
+        for record in airtable_records:
+            airtable_rows.append(record["fields"])
+            airtable_index.append(record["id"])
+        df = pd.DataFrame(airtable_rows, index=airtable_index)
+        df.columns = df.columns.str.replace('-', '_')
+        self.table_df = df
+        return self.table_df
 
 
 if __name__=="__main__":
     import json
     air = Airtable()
     temp = air.get_table_all()
+    df = air.get_dataframe()
