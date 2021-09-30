@@ -57,9 +57,10 @@ class Airtable():
         return self.table_records
 
     def get_dataframe(self):
+        self.get_table_all()
         airtable_rows = [] 
         airtable_index = []
-        for record in self.airtable_records:
+        for record in self.table_records:
             airtable_rows.append(record["fields"])
             airtable_index.append(record["id"])
         df = pd.DataFrame(airtable_rows, index=airtable_index)
@@ -71,5 +72,7 @@ class Airtable():
 if __name__=="__main__":
     import json
     air = Airtable()
-    temp = air.get_table_all()
+    table = air.get_table_all()
     df = air.get_dataframe()
+
+# %%
