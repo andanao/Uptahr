@@ -15,17 +15,28 @@ class Airtable():
                 self.base_id = f.read()
         else:
             self.base_id = base_id
+
+        self.get_table()
+        self.url = "https://api.airtable.com/v0/" + self.base_id + "/" + self.table_name
+        self.headers = {"Authorization": "Bearer " + api_key}
     
-    def get_table(self,params= (),table_name = False):
+    def set_response(self):
+        pass
+
+    def set_table_name(self,table_name = False):
         if not table_name:
             with open('keys/table_name.txt') as f:
                 self.table_name = f.read()
         else:
             self.table_name = table_name
 
+    def get_table(self,params= (),table_name = False):
+        
+
     def get_dataframe(self):
         pass
-
+    
+    
 
 
 
