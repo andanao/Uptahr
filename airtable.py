@@ -31,7 +31,7 @@ class Airtable():
         else:
             self.table_name = table_name
 
-    def set_url():
+    def set_url(self):
         if not(self.base_id):
             self.set_base_id()
         if not(self.table_name):
@@ -59,7 +59,7 @@ class Airtable():
     def get_dataframe(self):
         airtable_rows = [] 
         airtable_index = []
-        for record in airtable_records:
+        for record in self.airtable_records:
             airtable_rows.append(record["fields"])
             airtable_index.append(record["id"])
         df = pd.DataFrame(airtable_rows, index=airtable_index)
