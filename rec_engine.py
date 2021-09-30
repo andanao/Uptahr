@@ -29,11 +29,22 @@ class Engine():
                     t_dict[valj] +=1
         self.table_tags = t_dict
     
+    def set_user_tags_blank(self):
+        if not self.table_tags:
+            self.get_table_tags()
+        
+        clean_tags = self.table_tags
+        for key in clean_tags.keys():
+            clean_tags[key] = .1 #setting this to >0 to actaually give reccomendations to users with no read tags
+        
+        for user in self.users:
+            user.tags_read = clean_tags
 
 
 if __name__ == "__main__":
     eng = Engine()
     eng.get_table_tags()
+    eng.set_user_tags_blank()
     
 
 
@@ -42,21 +53,4 @@ if __name__ == "__main__":
     df = air.table_df
     user0 = eng.users[0]
     # eng.air.get_dataframe()
-# %%
-tags = df.obj_topics.dropna()
-
-t_dict = OrderedDict()
-for i,vali in enumerate(tags):
-    for j,valj in enumerate(vali):
-        if valj not in t_dict.keys():
-            t_dict[valj] =1
-        else:
-            t_dict[valj] +=1
-
-user_tags = t_dict
-for key in user_tags.keys():
-    user_tags[key] = 0
-print(user_tags)
-    
-    
 # %%
