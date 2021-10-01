@@ -43,18 +43,19 @@ class Engine():
         
         clean_tags = self.table_tags
         for key in clean_tags.keys():
-            clean_tags[key] = .1 #setting this to >0 to actaually give reccomendations to users with no read tags
+            clean_tags[key] = .01 #setting this to >0 to actaually give reccomendations to users with no read tags
         
         for user in self.users:
             user.tags_read = clean_tags
 
     def get_article_reads(self):
         """get the number of times each article has been read and attatch it to the df"""
-        print("!! get_article_reads generateing random read numbers")
+        # print("!! get_article_reads generateing random read numbers")
         self.air.table_df['read_count'] = np.random.randint(0,1000,size=len(self.air.table_df))
 
     def make_tag_array(self):
-        """make tag array, used for calculating reccomendations based on article tags"""
+        """make weighted tag array, used for calculating reccomendations based on article tags
+        weighting = if tag exists valuesarticle reads / total articles read"""
         tag_df = pd.DataFrame(np.zeros([len(self.air.table_df),len(self.table_tags)]),
                         index = self.air.table_df.index,
                         columns=self.table_tags.keys())
@@ -67,8 +68,8 @@ class Engine():
                     if tag_id in self.air.table_df.obj_topics[art_id]:
                         tag_df.iloc[i,j] = article_reads
 
-        self.tag_np = tag_df.to_numpy()
-        self.tag_df = tag_df
+        self.articles_tag_np = tag_df.to_numpy()
+        self.articles_tag_df = tag_df
 
     def read_article(self,art_id,user):
         user.articles_read.append(art_id)
@@ -78,6 +79,13 @@ class Engine():
             for item in self.air.table_df.obj_topics[art_id]:
                 user.tags_read[item] +=1
 
+    def get_article_suggestions(self,user):
+        user_tags_np = np.array(list(user.tags_read.values()))
+        suggestions_np = np.matmul(self.articles_tag_np,user_tags_np)
+        suggestion_df = pd.DataFrame(suggestions_np,index = self.articles_tag_df.index)
+        suggestion_df.sort_values(suggestion_df.columns[0],ascending=False,inplace=True)
+        suggestion_df.drop(user.articles_read,inplace=True)
+        return suggestion_df
 
 
 if __name__ == "__main__":
@@ -87,16 +95,27 @@ if __name__ == "__main__":
     # eng.get_article_reads()
     # eng.make_tag_array()
     # make user 0 read 20 random articles
+    eng.read_article(eng.article_id_list[0],eng.users[0])
+
     for i in np.random.randint(0,len(eng.article_id_list),size=20):
         eng.read_article(eng.article_id_list[i],eng.users[0])
-
+    suggested_articles = eng.get_article_suggestions(eng.users[0])
+    print("\tSuggestions for User 0:\nArticle ID\t\tweight\n")
+    for i in range(10):
+        print(suggested_articles.index[i]+"\t"+str(suggested_articles.iloc[i].values[0]))
 
     air = eng.air
     df = air.table_df
     user0 = eng.users[0]
     # eng.air.get_dataframe()
 # %%
+user = user0
 
-read_count_np = eng.air.table_df.iloc[:,-1].to_numpy()
+user_tags_np = np.array(list(user.tags_read.values()))
+suggestions_np = np.matmul(eng.articles_tag_np,user_tags_np)
+suggestion_df = pd.DataFrame(suggestions_np,index = eng.articles_tag_df.index)
+suggestion_df.sort_values(suggestion_df.columns[0],ascending=False,inplace=True)
+suggestion_df.drop(user.articles_read,inplace=True)
+df = suggestion_df
 
 # %%
