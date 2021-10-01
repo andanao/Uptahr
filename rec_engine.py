@@ -108,14 +108,3 @@ if __name__ == "__main__":
     df = air.table_df
     user0 = eng.users[0]
     # eng.air.get_dataframe()
-# %%
-user = user0
-
-user_tags_np = np.array(list(user.tags_read.values()))
-suggestions_np = np.matmul(eng.articles_tag_np,user_tags_np)
-suggestion_df = pd.DataFrame(suggestions_np,index = eng.articles_tag_df.index)
-suggestion_df.sort_values(suggestion_df.columns[0],ascending=False,inplace=True)
-suggestion_df.drop(user.articles_read,inplace=True)
-df = suggestion_df
-
-# %%
